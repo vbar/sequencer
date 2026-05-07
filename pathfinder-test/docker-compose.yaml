@@ -1,0 +1,130 @@
+services:
+  anvil:
+    image: ghcr.io/foundry-rs/foundry:stable
+    environment:
+      ANVIL_IP_ADDR: "0.0.0.0"
+    volumes:
+      - ./starknet-mock-l1-deploy/anvil_state.txt:/tmp/anvil_state.txt    
+    command: [
+      "anvil --load-state /tmp/anvil_state.txt --block-time 5"
+    ]
+    network_mode: "host"
+
+  apollo-mocks:
+    build:
+      context: ./apollo-mocks
+      dockerfile: ./Dockerfile
+    environment:
+      RUST_LOG: "debug"
+    command: [
+      "/usr/local/bin/apollo-mocks",
+      "[::]:18080"
+    ]
+    network_mode: "host"
+    
+  apollo-node-1:
+    image: apollo
+    build:
+      context: ..
+      dockerfile: deployments/images/sequencer/Dockerfile
+    environment:
+      RUST_LOG: info,apollo_l1_provider=debug,apollo_consensus=info,libp2p_kad=trace,new_established_connection=trace,libp2p_gossipsub=trace
+    volumes:
+      - ../crates/apollo_deployments/resources:/cfg
+    command: [
+      "-f", "/cfg/app_configs/base_layer_config.json",
+      "-f", "/cfg/app_configs/batcher_config.json",
+      "-f", "/cfg/app_configs/class_manager_config.json",
+      "-f", "/cfg/app_configs/committer_config.json",
+      "-f", "/cfg/app_configs/config_manager_config.json",
+      "-f", "/cfg/app_configs/consensus_manager_config.json",
+      "-f", "/cfg/app_configs/gateway_config.json",
+      "-f", "/cfg/app_configs/general_config.json",
+      "-f", "/cfg/app_configs/http_server_config.json",
+      "-f", "/cfg/app_configs/l1_gas_price_provider_config.json",
+      "-f", "/cfg/app_configs/l1_gas_price_scraper_config.json",
+      "-f", "/cfg/app_configs/l1_provider_config.json",
+      "-f", "/cfg/app_configs/l1_scraper_config.json",
+      "-f", "/cfg/app_configs/mempool_config.json",
+      "-f", "/cfg/app_configs/mempool_p2p_config.json",
+      "-f", "/cfg/app_configs/monitoring_endpoint_config.json",
+      "-f", "/cfg/app_configs/proof_manager_config.json",
+      "-f", "/cfg/app_configs/sierra_compiler_config.json",
+      "-f", "/cfg/app_configs/state_sync_config.json",
+      "-f", "/cfg/services/consolidated/node.json",
+      "-f", "/cfg/testing_secrets.json",
+      "-f", "/cfg/local-override-1.conf"
+    ]
+    network_mode: "host"
+
+  apollo-node-2:
+    image: apollo
+    build:
+      context: ..
+      dockerfile: deployments/images/sequencer/Dockerfile
+    environment:
+      RUST_LOG: info,apollo_l1_provider=debug,apollo_consensus=info
+    volumes:
+      - ../crates/apollo_deployments/resources:/cfg
+    command: [
+      "-f", "/cfg/app_configs/base_layer_config.json",
+      "-f", "/cfg/app_configs/batcher_config.json",
+      "-f", "/cfg/app_configs/class_manager_config.json",
+      "-f", "/cfg/app_configs/committer_config.json",
+      "-f", "/cfg/app_configs/config_manager_config.json",
+      "-f", "/cfg/app_configs/consensus_manager_config.json",
+      "-f", "/cfg/app_configs/gateway_config.json",
+      "-f", "/cfg/app_configs/general_config.json",
+      "-f", "/cfg/app_configs/http_server_config.json",
+      "-f", "/cfg/app_configs/l1_gas_price_provider_config.json",
+      "-f", "/cfg/app_configs/l1_gas_price_scraper_config.json",
+      "-f", "/cfg/app_configs/l1_provider_config.json",
+      "-f", "/cfg/app_configs/l1_scraper_config.json",
+      "-f", "/cfg/app_configs/mempool_config.json",
+      "-f", "/cfg/app_configs/mempool_p2p_config.json",
+      "-f", "/cfg/app_configs/monitoring_endpoint_config.json",
+      "-f", "/cfg/app_configs/proof_manager_config.json",
+      "-f", "/cfg/app_configs/sierra_compiler_config.json",
+      "-f", "/cfg/app_configs/state_sync_config.json",
+      "-f", "/cfg/services/consolidated/node.json",
+      "-f", "/cfg/testing_secrets.json",
+      "-f", "/cfg/local-override-2.conf"
+    ]
+    network_mode: "host"
+
+  apollo-node-3:
+    image: apollo
+    build:
+      context: ..
+      dockerfile: deployments/images/sequencer/Dockerfile
+    environment:
+      RUST_LOG: info,apollo_l1_provider=debug,apollo_consensus=info
+    volumes:
+      - ../crates/apollo_deployments/resources:/cfg
+    command: [
+      "-f", "/cfg/app_configs/base_layer_config.json",
+      "-f", "/cfg/app_configs/batcher_config.json",
+      "-f", "/cfg/app_configs/class_manager_config.json",
+      "-f", "/cfg/app_configs/committer_config.json",
+      "-f", "/cfg/app_configs/config_manager_config.json",
+      "-f", "/cfg/app_configs/consensus_manager_config.json",
+      "-f", "/cfg/app_configs/gateway_config.json",
+      "-f", "/cfg/app_configs/general_config.json",
+      "-f", "/cfg/app_configs/http_server_config.json",
+      "-f", "/cfg/app_configs/l1_gas_price_provider_config.json",
+      "-f", "/cfg/app_configs/l1_gas_price_scraper_config.json",
+      "-f", "/cfg/app_configs/l1_provider_config.json",
+      "-f", "/cfg/app_configs/l1_scraper_config.json",
+      "-f", "/cfg/app_configs/mempool_config.json",
+      "-f", "/cfg/app_configs/mempool_p2p_config.json",
+      "-f", "/cfg/app_configs/monitoring_endpoint_config.json",
+      "-f", "/cfg/app_configs/proof_manager_config.json",
+      "-f", "/cfg/app_configs/sierra_compiler_config.json",
+      "-f", "/cfg/app_configs/state_sync_config.json",
+      "-f", "/cfg/services/consolidated/node.json",
+      "-f", "/cfg/testing_secrets.json",
+      "-f", "/cfg/local-override-3.conf"
+    ]
+    network_mode: "host"
+
+

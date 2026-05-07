@@ -1,0 +1,11 @@
+[package]
+name = "starknet-mock-l1-deploy"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+alloy = { version = "1.0.37", features = ["full"] }
+alloy-provider = { version = "1.0.37", features = ["anvil-node"] }
+tokio = { version = "1.47.1", features = ["rt-multi-thread", "macros"] }
+
+[workspace]
