@@ -73,7 +73,7 @@
   "consensus_manager_config.network_config.reported_peer_ids_buffer_size": 100000,
   "consensus_manager_config.network_config.session_timeout": 120,
   "consensus_manager_config.proposals_topic": "consensus_proposals",
-  "consensus_manager_config.staking_manager_config.dynamic_config.default_committee": "0,100:",
+  "consensus_manager_config.staking_manager_config.dynamic_config.default_committee": "0,10:0x64,1,0x1,true;0x65,1,0x1,true;0x66,1,0x1,true",
   "consensus_manager_config.staking_manager_config.dynamic_config.override_committee.#is_none": true,
   "consensus_manager_config.staking_manager_config.dynamic_config.override_committee": "",
   "consensus_manager_config.staking_manager_config.static_config.max_cached_epochs": 10,
